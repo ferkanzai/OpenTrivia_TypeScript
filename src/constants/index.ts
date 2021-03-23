@@ -1,4 +1,4 @@
-export type categories = {
+export const categories = {
   "General Knowledge": 9,
   "Entertainment: Books": 10,
   "Entertainment: Film": 11,
