@@ -19,40 +19,38 @@ const difficulties = [
   'hard'
 ]
 
-const getQuiz = (questionsNumber, category, difficulty) => {
-  const url = 'https://opentdb.com/api.php?amount=10&category=11&difficulty=medium'
-  
+type ResultType={
+  category:string;
+  correct_answer:string;
+  difficulty:string;
+  incorrect_answers: string[];
+  question:string;
+  type:string;
 }
-
-
-//
-const getPokemon = (pokemonItem) => {
-
-  console.log("get pokemon =>", pokemonItem)
-
-  const pokemonFormatted = pokemonItem.toLowerCase()
-
-  const url = `https://pokeapi.co/api/v2/pokemon/${pokemonFormatted}`
-
-  console.log(pokemonFormatted)
-
-
+type TrivialResType ={
+  response_code:number;
+  results: ResultType[];
+}
+type AsyncError={
+  success:false;
+}
+const getQuiz = (questionsNumber:number, category:string, difficulty:string):Promise<TrivialResType | AsyncError> => {
+  const url = `https://opentdb.com/api.php?amount=${questionsNumber}&category=${category}&difficulty=${difficulty}`
   return fetch(url, { method: 'GET' })
-    .then((res) => res.json())
-    .then((result) => {
+  .then((res) => res.json())
+  .then((result) => {
 
-      //Aquí debemos poner un control de pokemon existente o error de la api?
-      return result
-    })
+    return result
+  })
+  .catch((error) => {
+    console.log("catch error del fetch")
+    return null
 
-    .catch((error) => {
-      alert('Pokemon no existe')
-      console.log("catch error del fetch")
-      return null
-
-    })
+  })
 }
-//
+
+
+
 const App: React.FC = (): ReactElement => {
 
   const { register, handleSubmit } = useForm<IFormTrivial>();
